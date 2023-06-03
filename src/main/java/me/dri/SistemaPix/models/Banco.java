@@ -1,10 +1,8 @@
 package me.dri.SistemaPix.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import me.dri.SistemaPix.enums.TiposConta;
 
-import java.util.ArrayList;
-import java.util.List;
 
 
 @Entity
@@ -16,19 +14,17 @@ public class Banco {
     private Long id;
     private String nome;
     private String agencia;
-
-    @JsonIgnore
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "banco")
-    private List<Cliente> clientes = new ArrayList<>();
+    private TiposConta tipo;
 
     public Banco() {
 
     }
 
-    public Banco(Long id, String nome, String agencia) {
+    public Banco(Long id, String nome, String agencia, TiposConta tipo) {
         this.id = id;
         this.nome = nome;
         this.agencia = agencia;
+        this.tipo = tipo;
     }
 
     public Long getId() {
@@ -55,8 +51,16 @@ public class Banco {
         this.agencia = agencia;
     }
 
-    public List<Cliente> getClientes() {
-        return clientes;
+
+    public TiposConta getTipo() {
+        return tipo;
     }
+
+    public void setTipo(TiposConta tipo) {
+        this.tipo = tipo;
+    }
+
+
+    
 
 }

@@ -20,7 +20,7 @@ public class ClienteService {
         return repository.findById(id);
     }
 
-    public List<Cliente> findALl() {
+    public List<Cliente> findAll() {
         return repository.findAll();
     }
 
