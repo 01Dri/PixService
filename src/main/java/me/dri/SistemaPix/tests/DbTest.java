@@ -34,8 +34,8 @@ public class DbTest implements CommandLineRunner {
         clienteRepository.deleteAll();
         bancoRepository.deleteAll();
         
-        Cliente cliente = new Cliente(null, "Diego", "123", "123", "123", "123", "123", 200.0);
-        Cliente cliente2 = new Cliente(null, "Melanie", "123", "123", "1234", "123", "1234", 50.0);
+        Cliente cliente = new Cliente(null, "Diego", "123", "diego@gmail", "123", "123456", "123", 200.0);
+        Cliente cliente2 = new Cliente(null, "Melanie", "123", "melanie@gmail", "1234", "123678", "1234", 50.0);
         Banco banco = new Banco(null, "santander", "003", TiposConta.CORRENTE);
         Banco banco2 = new Banco(null, "santander", "004", TiposConta.POUPANÇA);
         bancoRepository.saveAll(Arrays.asList(banco, banco2));

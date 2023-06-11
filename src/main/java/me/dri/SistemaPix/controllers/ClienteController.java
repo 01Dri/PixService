@@ -2,9 +2,12 @@ package me.dri.SistemaPix.controllers;
 
 
 import me.dri.SistemaPix.models.Cliente;
+import me.dri.SistemaPix.models.dto.ClienteDTO;
 import me.dri.SistemaPix.services.ClienteService;
 import me.dri.SistemaPix.services.PixServices;
 
+import me.dri.SistemaPix.utils.ConverterEntity;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,21 +30,16 @@ public class ClienteController {
     private PixServices pixServices;
 
     @GetMapping
-    public ResponseEntity<List<Cliente>> findAll() {
+    public ResponseEntity<List<ClienteDTO>> findAll() {
         List<Cliente> clientes = service.findAll();
-        return ResponseEntity.ok().body(clientes);
+        List<ClienteDTO> clienteDTOList = ConverterEntity.convertyListToDTO(clientes);
+        return ResponseEntity.ok().body(clienteDTOList);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Optional<Cliente>> findById(@PathVariable Long id) {
+    public ResponseEntity<ClienteDTO> findById(@PathVariable Long id) {
         var cliente = service.findById(id);
-        return ResponseEntity.ok().body(cliente);
+        return ResponseEntity.ok().body(ConverterEntity.convertyEntityToDTO(cliente));
     }
-    @GetMapping(value = "/pix/{id}/{chave_pix}")
-    public ResponseEntity<Cliente> pix(@PathVariable Long id, @PathVariable String chave_pix,  @RequestParam("pix") Double valor) {
-        var cliente2 = pixServices.pix(id, chave_pix, valor);
-        return ResponseEntity.ok().body(cliente2);
-    }
-
 
 }

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     Optional<Cliente> findByChavePix(String chavePix);
+    Optional<Cliente> findByEmail(String email);
 
 
 
