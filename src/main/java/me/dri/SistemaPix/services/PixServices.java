@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.dri.SistemaPix.exception.ResourceNotFound;
+import me.dri.SistemaPix.models.dto.ClienteDTO;
 import me.dri.SistemaPix.repositories.ClienteRepository;
+import me.dri.SistemaPix.utils.ConverterEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +21,12 @@ public class PixServices {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public Cliente pix(Long id, String chave_pix, Double valor) {
+    public ClienteDTO pix(Long id, String chave_pix, Double valor) {
 
         var cliente1 = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Usuario não existe!"));
         var cliente2 = clienteRepository.findByChavePix(chave_pix).orElseThrow(() -> new ResourceNotFound("Usuario não existe!"));
         clienteRepository.saveAll(transacao(cliente1, cliente2, valor));
-        return cliente1;
+        return ConverterEntity.convertyEntityToDTO(cliente1);
 
     }
 

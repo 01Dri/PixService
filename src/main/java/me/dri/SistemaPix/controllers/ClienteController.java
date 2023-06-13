@@ -31,15 +31,14 @@ public class ClienteController {
 
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> findAll() {
-        List<Cliente> clientes = service.findAll();
-        List<ClienteDTO> clienteDTOList = ConverterEntity.convertyListToDTO(clientes);
-        return ResponseEntity.ok().body(clienteDTOList);
+        List<ClienteDTO> clientes = service.findAll();
+        return ResponseEntity.ok().body(clientes);
     }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<ClienteDTO> findById(@PathVariable Long id) {
         var cliente = service.findById(id);
-        return ResponseEntity.ok().body(ConverterEntity.convertyEntityToDTO(cliente));
+        return ResponseEntity.ok().body(cliente);
     }
 
 }

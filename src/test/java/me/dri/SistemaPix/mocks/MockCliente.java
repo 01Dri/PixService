@@ -8,7 +8,7 @@ public class MockCliente {
 
     Banco banco = new Banco(1L, "0003", "Santander", TiposConta.POUPANÇA);
     Banco banco2 = new Banco(2L, "0003", "Santander", TiposConta.CORRENTE);
-    public Cliente mockClienteBancoPoupanca(Integer number) {
+    public Cliente mockClienteRemetenteBancoPoupanca(Integer number) {
         Cliente cliente = new Cliente();
         cliente.setId(number.longValue());
         cliente.setNome("Diego");
@@ -22,7 +22,7 @@ public class MockCliente {
         return cliente;
     }
 
-    public Cliente mockCliente2BancoPoupanca(Integer number) {
+    public Cliente mockClienteDestinatarioBancoPoupanca(Integer number) {
         Cliente cliente = new Cliente();
         cliente.setId(number.longValue());
         cliente.setNome("Melanie");
@@ -36,7 +36,7 @@ public class MockCliente {
         return cliente;
     }
 
-    public Cliente mockClienteBancoCorrent(Integer number) {
+    public Cliente mockClienteRemetenteBancoCorrent(Integer number) {
         Cliente cliente = new Cliente();
         cliente.setId(number.longValue());
         cliente.setNome("Diego");
@@ -50,7 +50,7 @@ public class MockCliente {
         return cliente;
     }
 
-    public Cliente mockCliente2BancoCorrent(Integer number) {
+    public Cliente mockClienteDestinatarioBancoCorrent(Integer number) {
         Cliente cliente = new Cliente();
         cliente.setId(number.longValue());
         cliente.setNome("Diego");

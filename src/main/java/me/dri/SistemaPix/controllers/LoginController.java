@@ -17,16 +17,14 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:8080")
 public class LoginController {
 
-
     @Autowired
     ClienteService service;
     @PostMapping
     public ResponseEntity<ClienteDTO> login(@RequestBody Map<String, String> loginData) {
         String email = loginData.get("email");
         String senha = loginData.get("senha");
-        Cliente cliente = service.login(email, senha);
-        ClienteDTO clienteDTO = ConverterEntity.convertyEntityToDTO(cliente);
-        return ResponseEntity.ok().body(clienteDTO);
+        ClienteDTO cliente = service.login(email, senha);
+        return ResponseEntity.ok().body(cliente);
 
     }
 }

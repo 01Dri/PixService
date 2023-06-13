@@ -51,10 +51,10 @@ public class PixServicesTest {
     void testandoExcecaoNotLimitExceptionContaPoupanca() {
         Long id = 1L;
         String chave__pix = "1234";
-        Cliente cliente1 = input.mockClienteBancoPoupanca(1);
-        Cliente cliente2 = input.mockCliente2BancoPoupanca(2);
-        when(repository.findById(id)).thenReturn(Optional.of(cliente1));
-        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(cliente2));
+        Cliente clienteRemetente = input.mockClienteRemetenteBancoPoupanca(1);
+        Cliente clienteDestinatario = input.mockClienteDestinatarioBancoPoupanca(2);
+        when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
+        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         try {
             var result = pixServices.pix(id, chave__pix, 400.0);
@@ -68,10 +68,10 @@ public class PixServicesTest {
     void testandoExcecaoNotLimitExceptionContaCorrent() {
         Long id = 1L;
         String chave__pix = "1234";
-        Cliente cliente1 = input.mockClienteBancoCorrent(1);
-        Cliente cliente2 = input.mockCliente2BancoCorrent(2);
-        when(repository.findById(id)).thenReturn(Optional.of(cliente1));
-        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(cliente2));
+        Cliente clienteRemetente = input.mockClienteRemetenteBancoCorrent(1);
+        Cliente clienteDestinatario = input.mockClienteDestinatarioBancoCorrent(2);
+        when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
+        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         try {
             var result = pixServices.pix(id , chave__pix, 801.0);
@@ -85,27 +85,27 @@ public class PixServicesTest {
     void testandoTransacaoCompletaPixPoupanca() {
         Long id = 1L;
         String chave__pix = "1234";
-        Cliente cliente1 = input.mockClienteBancoPoupanca(1);
-        Cliente cliente2 = input.mockCliente2BancoPoupanca(2);
-        when(repository.findById(id)).thenReturn(Optional.of(cliente1));
-        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(cliente2));
+        Cliente clienteRemetente = input.mockClienteRemetenteBancoPoupanca(1);
+        Cliente clienteDestinatario = input.mockClienteDestinatarioBancoPoupanca(2);
+        when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
+        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         var result = pixServices.pix(id, chave__pix, 300.0);
-        assertEquals(Optional.of(cliente1.getSaldo()), Optional.of(0.0));
-        assertEquals(Optional.of(cliente2.getSaldo()), Optional.of(600.0));
+        assertEquals(Optional.of(clienteRemetente.getSaldo()), Optional.of(0.0));
+        assertEquals(Optional.of(clienteDestinatario.getSaldo()), Optional.of(600.0));
     }
 
     @Test
     void testandoTransacaoCompletaPixCorrent() {
         Long id = 1L;
         String chave__pix = "1234";
-        Cliente cliente1 = input.mockClienteBancoCorrent(1);
-        Cliente cliente2 = input.mockCliente2BancoCorrent(2);
-        when(repository.findById(id)).thenReturn(Optional.of(cliente1));
-        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(cliente2));
+        Cliente clienteRemetente = input.mockClienteRemetenteBancoCorrent(1);
+        Cliente clienteDestinatario = input.mockClienteDestinatarioBancoCorrent(2);
+        when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
+        when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         var result = pixServices.pix(id, chave__pix, 800.0);
-        assertEquals(Optional.of(cliente1.getSaldo()), Optional.of(-500.0));
-        assertEquals(Optional.of(cliente2.getSaldo()), Optional.of(1100.0));
+        assertEquals(Optional.of(clienteRemetente.getSaldo()), Optional.of(-500.0));
+        assertEquals(Optional.of(clienteDestinatario.getSaldo()), Optional.of(1100.0));
     }
 }
