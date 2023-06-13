@@ -1,52 +1,54 @@
 package me.dri.SistemaPix.services;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
+import me.dri.SistemaPix.exception.ResourceNotFound;
+import me.dri.SistemaPix.repositories.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import me.dri.SistemaPix.enums.TiposConta;
-import me.dri.SistemaPix.exception.KeyPixInvalid;
 import me.dri.SistemaPix.exception.NotLimitException;
 import me.dri.SistemaPix.models.Cliente;
-import me.dri.SistemaPix.repositories.PixRepository;
 
 @Service
 public class PixServices {
 
 
     @Autowired
-    private PixRepository pixRepository;
+    private ClienteRepository clienteRepository;
 
     public Cliente pix(Long id, String chave_pix, Double valor) {
 
-        var cliente1 = pixRepository.findById(id).orElse(null);
-        var cliente2 = pixRepository.findByChavePix(chave_pix).orElse(null);
-        if (cliente2 == null) {
-            throw new KeyPixInvalid("Chave pix inválida!");
+        var cliente1 = clienteRepository.findById(id).orElseThrow(() -> new ResourceNotFound("Usuario não existe!"));
+        var cliente2 = clienteRepository.findByChavePix(chave_pix).orElseThrow(() -> new ResourceNotFound("Usuario não existe!"));
+        clienteRepository.saveAll(transacao(cliente1, cliente2, valor));
+        return cliente1;
+
+    }
+
+    public List<Cliente> transacao(Cliente clienteDTO, Cliente clienteDTO2, Double saldo) {
+        List<Cliente> clientes = new ArrayList<>();
+        var saldoInicialCliente1 = clienteDTO.getSaldo();
+        var saldoInicialCliente2 = clienteDTO2.getSaldo();
+        clienteDTO.setSaldo(clienteDTO.getSaldo() - saldo);
+        clienteDTO2.setSaldo(clienteDTO2.getSaldo() + saldo);
+
+        if (clienteDTO.getBanco().getTipo() == TiposConta.POUPANÇA && clienteDTO.getSaldo() < 0) {
+            clienteDTO.setSaldo(saldoInicialCliente1);
+            clienteDTO2.setSaldo(saldoInicialCliente2);
+            throw new NotLimitException("Você não tem saldo suficiente!");
         }
 
-        double valorInicial = cliente1.getSaldo();
-        double valorCliente1 = cliente1.getSaldo() - valor;
-        double valorCliente2 = cliente2.getSaldo() + valor;
-
-        if (cliente1.getChavePix().equals(chave_pix)) {
-            throw new KeyPixInvalid("Chave pix invalida!");
-        }
-        cliente1.setSaldo(valorCliente1);
-        if (cliente1.getBanco().getTipo() == TiposConta.CORRENTE && cliente1.getSaldo() < -100) {
-            cliente1.setSaldo(valorInicial);
-            System.out.println(cliente1.getSaldo());
+        if (clienteDTO.getBanco().getTipo() == TiposConta.CORRENTE && clienteDTO.getSaldo() < -500) {
+            clienteDTO.setSaldo(saldoInicialCliente1);
+            clienteDTO2.setSaldo(saldoInicialCliente2);
             throw new NotLimitException("Limite excedido!");
         }
-        cliente2.setSaldo(valorCliente2);
-        if (cliente1.getBanco().getTipo() == TiposConta.POUPANÇA && cliente1.getSaldo() < 0) {
-            cliente1.setSaldo(valorInicial);
-            System.out.println(cliente1.getSaldo());
-            throw new NotLimitException("Saldo insuficiente!");
-        }
-        pixRepository.saveAll(Arrays.asList(cliente1, cliente2));
-        return cliente1;
-    
+
+        clientes.add(clienteDTO);
+        clientes.add(clienteDTO2);
+        return clientes;
     }
 }

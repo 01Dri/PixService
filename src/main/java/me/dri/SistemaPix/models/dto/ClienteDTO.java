@@ -9,6 +9,7 @@ public class ClienteDTO  implements Serializable {
     private Long id;
     private String nome;
     private String email;
+    private String chave_pix;
     private Double saldo;
 
     private Banco banco;
@@ -17,10 +18,11 @@ public class ClienteDTO  implements Serializable {
 
     }
 
-    public ClienteDTO(Long id, String nome, String email, Double saldo, Banco banco) {
+    public ClienteDTO(Long id, String nome, String email, String chave_pix, Double saldo, Banco banco) {
         this.id = id;
         this.nome = nome;
         this.email = email;
+        this.chave_pix = chave_pix;
         this.saldo = saldo;
         this.banco = banco;
     }
@@ -47,6 +49,14 @@ public class ClienteDTO  implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getChave_pix() {
+        return chave_pix;
+    }
+
+    public void setChave_pix(String chave_pix) {
+        this.chave_pix = chave_pix;
     }
 
     public Double getSaldo() {

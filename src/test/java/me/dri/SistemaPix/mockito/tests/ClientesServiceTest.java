@@ -32,7 +32,6 @@ public class ClientesServiceTest {
 
     MockCliente mockCliente = new MockCliente();
 
-    Cliente cliente = mockCliente.mockEntity(1);
 
     @BeforeEach
     public void setup() {

@@ -13,6 +13,7 @@ public class ConverterEntity {
         clienteDTO.setId(cliente.getId());
         clienteDTO.setNome(cliente.getNome());
         clienteDTO.setEmail(cliente.getEmail());
+        clienteDTO.setChave_pix(cliente.getChavePix());
         clienteDTO.setSaldo(cliente.getSaldo());
         clienteDTO.setBanco(cliente.getBanco());
         return clienteDTO;
