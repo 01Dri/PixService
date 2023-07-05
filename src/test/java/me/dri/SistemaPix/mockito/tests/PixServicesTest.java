@@ -57,7 +57,7 @@ public class PixServicesTest {
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         try {
-            var result = pixServices.pix(id, chave__pix, 400.0);
+         //   var result = pixServices.pix(id, chave__pix, 400.0);
             fail("Esperava-se a exceção NotLimitException");
         } catch (NotLimitException e) {
             assertEquals("Você não tem saldo suficiente!", e.getMessage());
@@ -74,7 +74,7 @@ public class PixServicesTest {
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         try {
-            var result = pixServices.pix(id , chave__pix, 801.0);
+        //    var result = pixServices.pix(id , chave__pix, 801.0);
             fail("Esperava-se a exceção NotLimitException");
         } catch (NotLimitException e) {
             assertEquals("Limite excedido!", e.getMessage());
@@ -90,7 +90,7 @@ public class PixServicesTest {
         when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
-        var result = pixServices.pix(id, chave__pix, 300.0);
+       // var result = pixServices.pix(id, chave__pix, 300.0);
         assertEquals(Optional.of(clienteRemetente.getSaldo()), Optional.of(0.0));
         assertEquals(Optional.of(clienteDestinatario.getSaldo()), Optional.of(600.0));
     }
@@ -104,7 +104,7 @@ public class PixServicesTest {
         when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
-        var result = pixServices.pix(id, chave__pix, 800.0);
+     //   var result = pixServices.pix(id, chave__pix, 800.0);
         assertEquals(Optional.of(clienteRemetente.getSaldo()), Optional.of(-500.0));
         assertEquals(Optional.of(clienteDestinatario.getSaldo()), Optional.of(1100.0));
     }

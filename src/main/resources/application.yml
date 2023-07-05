@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/bancoDri
+    url: jdbc:mysql://localhost:3306/bancodri
     username: root
     password: admin12345678
     driver-class-name: com.mysql.jdbc.Driver

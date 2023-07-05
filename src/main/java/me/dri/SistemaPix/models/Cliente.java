@@ -2,6 +2,8 @@ package me.dri.SistemaPix.models;
 
 
 import jakarta.persistence.*;
+import me.dri.SistemaPix.enums.TiposConta;
+import me.dri.SistemaPix.exception.NotLimitException;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -44,7 +46,6 @@ public class Cliente  implements Serializable {
     public Long getId() {
         return id;
     }
-
 
 
     public void setId(Long id) {
@@ -114,6 +115,28 @@ public class Cliente  implements Serializable {
 
     public String getChavePix() {
         return chavePix;
+    }
+
+
+    public Double transacao(Double valor) {
+        if (getBanco().getTipo() == TiposConta.POUPANÇA) {
+            if (getSaldo() - valor < 0) {
+                throw new NotLimitException("Você não tem saldo suficiente para essa operação");
+            }
+        }
+
+        if (getBanco().getTipo() == TiposConta.CORRENTE) {
+            if (getSaldo() - valor < -500) {
+                throw new NotLimitException("Você não tem saldo suficiente para essa operação");
+            }
+        }
+        setSaldo(getSaldo() - valor);
+        return getSaldo();
+
+    }
+
+    public void recebimento(Double valorRecebimento) {
+        setSaldo(getSaldo() + valorRecebimento);
     }
 
     @Override

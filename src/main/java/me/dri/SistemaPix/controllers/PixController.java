@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import me.dri.SistemaPix.models.Cliente;
 import me.dri.SistemaPix.services.PixServices;
 
 @RestController
@@ -16,9 +15,9 @@ public class PixController {
     @Autowired
     private PixServices pixServices;
 
-    @PostMapping(value = "/{id}/{chave_pix}")
-    public ResponseEntity<ClienteDTO> pix(@PathVariable Long id, @PathVariable String chave_pix, @RequestParam("pix") Double valor) {
-        var cliente2 = pixServices.pix(id, chave_pix,valor);
-        return ResponseEntity.ok().body(cliente2);
+    @PostMapping("/{idRemetente}/{chavePix}/{valor}")
+    public ResponseEntity<ClienteDTO> pix(@PathVariable Long idRemetente, @PathVariable String chavePix, @PathVariable Double valor) {
+        var remetenteCliente = pixServices.pix(idRemetente, chavePix, valor);
+        return ResponseEntity.ok().body(remetenteCliente);
     }
 }

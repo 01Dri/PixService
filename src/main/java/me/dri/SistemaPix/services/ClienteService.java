@@ -8,10 +8,7 @@ import me.dri.SistemaPix.utils.ConverterEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -20,15 +17,23 @@ public class ClienteService {
     @Autowired
     private ClienteRepository repository;
 
-    public ClienteDTO login(String email, String senha) {
-
-        Cliente cliente = repository.findByEmail(email).orElseThrow(() -> new ResourceNotFound("Cliente não localizado"));
-        if (cliente.getSenha().equals(senha)) {
-            return ConverterEntity.convertyEntityToDTO(cliente);
-        } else {
-            throw new ResourceNotFound("Cliente não localizado!");
+    public ClienteDTO login(ClienteDTO clienteDTO2) {
+        var cliente = repository.findByEmail(clienteDTO2.email()).orElseThrow();
+        if (cliente.getSenha().equals(clienteDTO2.senha())) {
+            return ConverterEntity.convertyEntityToDTO2(cliente);
         }
+        throw new ResourceNotFound("Cliente não localizado!");
+    }
 
+    public ClienteDTO findById(Long id) {
+        var result = repository.findById(id).orElseThrow();
+        return ConverterEntity.convertyEntityToDTO2(result);
+
+    }
+
+    public List<ClienteDTO> findAll() {
+        var clientes = repository.findAll();
+        return ConverterEntity.convertityListToDTO2(clientes);
     }
 
 }
