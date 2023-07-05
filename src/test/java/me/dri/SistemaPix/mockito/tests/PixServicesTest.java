@@ -57,10 +57,10 @@ public class PixServicesTest {
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         try {
-         //   var result = pixServices.pix(id, chave__pix, 400.0);
+          var result = pixServices.pix(id, chave__pix, 400.0);
             fail("Esperava-se a exceção NotLimitException");
         } catch (NotLimitException e) {
-            assertEquals("Você não tem saldo suficiente!", e.getMessage());
+            assertEquals("Você não tem saldo suficiente para essa operação", e.getMessage());
         }
     }
 
@@ -74,10 +74,10 @@ public class PixServicesTest {
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
         try {
-        //    var result = pixServices.pix(id , chave__pix, 801.0);
+           var result = pixServices.pix(id , chave__pix, 801.0);
             fail("Esperava-se a exceção NotLimitException");
         } catch (NotLimitException e) {
-            assertEquals("Limite excedido!", e.getMessage());
+            assertEquals("Você não tem saldo suficiente para essa operação", e.getMessage());
         }
     }
 
@@ -90,22 +90,22 @@ public class PixServicesTest {
         when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
-       // var result = pixServices.pix(id, chave__pix, 300.0);
-        assertEquals(Optional.of(clienteRemetente.getSaldo()), Optional.of(0.0));
+       var result = pixServices.pix(id, chave__pix, 300.0);
+        assertEquals(Optional.of(result.saldo()), Optional.of(0.0));
         assertEquals(Optional.of(clienteDestinatario.getSaldo()), Optional.of(600.0));
     }
 
     @Test
     void testandoTransacaoCompletaPixCorrent() {
-        Long id = 1L;
         String chave__pix = "1234";
         Cliente clienteRemetente = input.mockClienteRemetenteBancoCorrent(1);
         Cliente clienteDestinatario = input.mockClienteDestinatarioBancoCorrent(2);
-        when(repository.findById(id)).thenReturn(Optional.of(clienteRemetente));
+        when(repository.findById(clienteRemetente.getId())).thenReturn(Optional.of(clienteRemetente));
         when(repository.findByChavePix(chave__pix)).thenReturn(Optional.of(clienteDestinatario));
 
-     //   var result = pixServices.pix(id, chave__pix, 800.0);
-        assertEquals(Optional.of(clienteRemetente.getSaldo()), Optional.of(-500.0));
+
+        var result = pixServices.pix(clienteRemetente.getId(), chave__pix, 800.0);
+        assertEquals(Optional.of(result.saldo()), Optional.of(-500.0));
         assertEquals(Optional.of(clienteDestinatario.getSaldo()), Optional.of(1100.0));
     }
 }

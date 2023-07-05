@@ -53,13 +53,13 @@ public class MockCliente {
     public Cliente mockClienteDestinatarioBancoCorrent(Integer number) {
         Cliente cliente = new Cliente();
         cliente.setId(number.longValue());
-        cliente.setNome("Diego");
-        cliente.setSobrenome("Henrique");
-        cliente.setEmail("diego@gmail.com");
+        cliente.setNome("Mel");
+        cliente.setSobrenome("Kaminski");
+        cliente.setEmail("mel@gmail.com");
         cliente.setBanco(banco2);
         cliente.setCpf("123");
         cliente.setSenha("123");
-        cliente.setChavePix("123");
+        cliente.setChavePix("1234");
         cliente.setSaldo(300.0);
         return cliente;
     }
